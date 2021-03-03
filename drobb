@@ -1,0 +1,183 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <numeric>
+
+unsigned int gcd(unsigned int a, unsigned int b) {
+	if (a == b)
+		return a;
+	if (a > b)
+		return gcd(a - b, b);
+	return gcd(a, b - a);
+}
+
+int lcm(int arg1, int arg2) {// определение функции наименьшего общего кратного
+	return arg1 / gcd(arg1, arg2) * arg2;
+}
+
+class drobb {
+private:
+	int ch, zn;
+public:
+	drobb() {
+		ch = 0;
+		zn = 1;
+	}
+	drobb(int a, int b) {
+		this->ch = a;
+		this->zn = b;
+	}
+	drobb(int a) {
+		ch = a;
+		zn = 1;
+	}
+
+	friend std::ostream& operator<<(std::ostream& out,const drobb& x) {
+		if (x.ch != 0) {
+			int g = 1;
+			if (x.ch > 0) g = gcd(x.ch, x.zn);
+			if (x.ch < 0) g = gcd(-1 * x.ch, x.zn);
+			if (x.zn != 1 && x.ch % x.zn != 0) {
+				out << x.ch / g << '/' << x.zn/g;
+				return out;
+			}
+			else {
+				out << x.ch/x.zn;
+				return out;
+			}
+		}
+		out << 0;
+		return out;
+	}
+	friend std::istream& operator>>(std::istream& x, drobb& a) {
+		char s;
+		x >> a.ch >> s >> a.zn;
+		if (s != '/') {
+			std::cout << "eto ne drobb";
+		}
+		return x;
+	}
+	friend const drobb operator+(const drobb& a,const drobb& b) {
+		drobb c;
+		c.zn = lcm(a.zn, b.zn);
+		c.ch = a.ch * (c.zn / a.zn) + b.ch * (c.zn / b.zn);
+		return c;
+	}
+	friend const drobb operator-(const drobb& a,const drobb& b) {
+		drobb c;
+		c.zn = lcm(a.zn, b.zn);
+		c.ch = a.ch * (c.zn / a.zn) - b.ch * (c.zn / b.zn);
+		return c;
+	}
+	friend const drobb operator*(const drobb& a,const drobb& b) {
+		drobb c(a.ch * b.ch, a.zn * b.zn);
+		return c;
+	}
+	friend const drobb operator/ (const drobb& a, const drobb& b) {
+		drobb c(a.ch * b.zn, b.ch * a.zn);
+		return c;
+	}
+
+	void operator-() { 
+		this->ch = -this->ch;
+	}  
+	void operator=(drobb b) {
+		this->ch = b.ch;
+		this->zn = b.zn;
+	}
+	void operator=(int a) {
+		this->ch = a;
+		this->zn = 1;
+	}
+	void operator+=(int b) {
+		this->ch = b * this->zn + this->ch;
+	}
+	void operator+=(drobb b) {
+		drobb c;
+		c.zn = lcm(this->zn, b.zn);
+		c.ch = this->ch * (c.zn / this->zn) + b.ch * (c.zn / b.zn);
+		this->ch = c.ch;
+		this->zn = c.zn;
+	}
+	void operator-=(int b) {
+		this->ch = -b * this->zn + this->ch;
+	}
+	void operator-=(drobb b){
+		drobb c;
+		c.zn = lcm(this->zn, b.zn);
+		c.ch = this->ch * (c.zn / this->zn) - b.ch * (c.zn / b.zn);
+		this->ch = c.ch;
+		this->zn = c.zn;
+	}
+	void operator*=(int b) {
+		this->ch = b*this->ch;
+	}
+	void operator*=(drobb b) {
+		this->ch = this->ch * b.ch;
+		this->zn = this->zn * b.zn;
+	}
+	void operator/=(int b) {
+		this->zn = b*this->zn;
+	}
+	void operator/=(drobb b)  {
+		this->ch = this->ch * b.zn;
+		this->zn = this->zn * b.ch;
+	}
+
+	//(+10б)
+	friend const drobb operator+(const drobb& a, const int& b) {
+		drobb c(a.ch + b*a.zn,a.zn);
+		return c;
+	}
+	friend drobb operator-(drobb& a, int& b) {
+		drobb c(a.ch - b * a.zn, a.zn);
+		return c;
+	}
+	friend drobb operator*(drobb& a, int& b) {
+		a.ch *= b;
+		return a;
+	}
+	friend drobb operator/(drobb& a, int& b) {
+		a.zn *= b;
+		return a;
+	}
+	
+	//(+10б)
+	operator double() const{ 
+		return double(this->ch) / this->zn;
+	}
+
+	
+	
+};
+
+int main() {
+	for (int i = 0;;) {
+		drobb a;
+		drobb b;
+		char c;
+		std::cin >> a;
+		std::cin >> c;
+		if (c == 'e') break;
+		if (c == '+') {
+			std::cin >> b;
+			std::cout << "= " << a + b;
+		}
+		if (c == '-') {
+			std::cin >> b;
+			std::cout << "= " <<  a - b;
+		}
+		if (c == '*') {
+			std::cin >> b;
+			std::cout << "=  " << a * b;
+		}
+		if (c == '/') {
+			std::cin >> b;
+			std::cout << "= " << a / b;
+		}
+		if (c == 'd') {
+			std::cout << "= " << double(a);
+		}
+	}
+	return 0;
+}
