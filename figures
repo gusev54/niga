@@ -1,0 +1,149 @@
+#include <iostream>
+#include <cmath>
+
+class figure {
+public:
+	figure() {}
+	virtual double perimeter() const = 0;
+	virtual double square() const = 0;
+	virtual unsigned angles_amount() const = 0;
+};
+class Triangle : public figure {
+
+public:
+	Triangle(double& x,double& y,double& z): a(x), b(y), c(z) {}
+	double perimeter() const override{
+		return a + b + c;
+	}
+	unsigned angles_amount() const override{
+		return 3;
+	}
+	double square() const override{
+		double p = (a + b + c) / 2;
+		return sqrt(p * (p - a) * (p - b) * (p - c));
+	}
+private:
+	double a, b, c;
+};
+
+class Square : public figure {
+
+public:
+	Square(double& x): a(x) {}
+	double perimeter() const override{
+		return 4 * a;
+	}
+	unsigned angles_amount() const override{
+		return 4;
+	}
+	double square() const override{
+		return a * a;
+	}
+private:
+	double a;
+};
+
+class Rectangle : public figure {
+
+public:
+	Rectangle(double& x, double& y): a(x), b(y) {}
+	double square() const override{
+		return a * b;
+	}
+	double perimeter() const override{
+		return 2 * a + 2 * b;
+	}
+	unsigned angles_amount() const override{
+		return 4;
+	}
+private:
+	double a, b;
+};
+
+class Circle : public figure {
+
+public:
+	Circle(double& x): R(x){}
+	double square() const override{
+		return pi * R * R;
+	}
+	double perimeter() const override{
+		return 2 * pi * R;
+	}
+	unsigned angles_amount() const override{
+		return 0;
+	}
+private:
+	double R;
+	const double pi = 3.1416;
+};
+
+class Ellipsis : public figure {
+
+public:
+	Ellipsis(double& x, double& y):a(x), b(y) {}
+	double square() const override{
+		return pi * a * b;
+	}
+	unsigned angles_amount() const override{
+		return 0;
+	}
+	double perimeter() const override{
+		return 2 * pi * sqrt((a * a + b * b) / 2);
+	}
+private:
+	double a, b;
+	const double pi = 3.1416;
+};
+
+double S(figure* a) {
+	return a->square();
+}
+double P(figure* a) {
+	return a->perimeter();
+}
+unsigned Angles(figure* a) {
+	return a->angles_amount();
+}
+
+
+int main() {
+	figure* a;
+	std::string vvod1;
+	std::string vvod2;
+	std::cin >> vvod1;
+	if (vvod1 == "Circle") {
+		double x;
+		std::cin >> x;
+		a = new Circle(x);
+	}
+	else if (vvod1 == "Ellipsis") {
+		double x, y;
+		std::cin >> x >> y;
+		a = new Ellipsis(x, y);
+	}
+	else if (vvod1 == "Square") {
+		double x;
+		std::cin >> x;
+		a = new Square(x);
+	}
+	else if (vvod1 == "Rectangle") {
+		double x, y;
+		std::cin >> x >> y;
+		a = new Rectangle(x, y);
+	}
+	else if (vvod1 == "Triangle") {
+		double x, y, z;
+		std::cin >> x >> y >> z;
+		a = new Triangle(x, y, z);
+	}
+	else {
+		return 0;
+	}
+	std::cin >> vvod2;
+	if (vvod2 == "s") std::cout << S(a);
+	else if (vvod2 == "p") std::cout << P(a);
+	else if (vvod2 == "a") std::cout << Angles(a);
+	else return 0;
+	delete a;
+}
