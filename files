@@ -25,5 +25,8 @@ int main() {
 		else if (str.length() % 2 == 1) odd << str << std::endl;
 	}
 	fin.close();
+	even.close();
+	odd.close();
+	c.close();
 	return 0;
 }
