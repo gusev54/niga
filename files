@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <filesystem>
+#include <direct.h>
+
+int main() {
+	std::string path = "C:\\Users\\gusev\\Desktop\\papka s failom\\niga.txt";
+	_mkdir("C:\\Users\\gusev\\Desktop\\papka s failom\\processed");
+	std::string path_odd = "C:\\Users\\gusev\\Desktop\\papka s failom\\processed\\odd.txt";
+	std::string path_even = "C:\\Users\\gusev\\Desktop\\papka s failom\\processed\\even.txt";
+	std::string path_c = "C:\\Users\\gusev\\Desktop\\papka s failom\\processed\\c.txt";
+	std::ifstream fin;
+	std::ofstream even, odd, c;
+	fin.open(path);
+	even.open(path_even);
+	odd.open(path_odd);
+	c.open(path_c);
+	std::string str;
+	for (;fin;) {
+		std::string str;
+		getline(fin, str);
+		if (str.find('c') < 100000) c << str << std::endl;
+		else if (str.length() % 2 == 0) even << str << std::endl;
+		else if (str.length() % 2 == 1) odd << str << std::endl;
+	}
+	fin.close();
+	return 0;
+}
