@@ -16,17 +16,16 @@ int main() {
 	even.open(path_even);
 	odd.open(path_odd);
 	c.open(path_c);
-	std::string str;
-	for (;fin;) {
+	for (; fin;) {
 		std::string str;
 		getline(fin, str);
-		if (str.find('c') < 100000) c << str << std::endl;
+		if (str.find('c') < std::string::npos) c << str << std::endl;
 		else if (str.length() % 2 == 0) even << str << std::endl;
 		else if (str.length() % 2 == 1) odd << str << std::endl;
 	}
 	fin.close();
 	even.close();
-	odd.close();
 	c.close();
+	odd.close();
 	return 0;
 }
