@@ -1,0 +1,57 @@
+include <iostream>
+#include <deque>
+#include <algorithm>
+#include <numeric>
+#include <random>
+#include <chrono>
+#include <vector>
+
+int main() {
+	std::deque<int> D(10); //1
+	std::iota(D.begin(), D.end(), 1);
+
+	std::uniform_int_distribution<int> inter(1, 10); //2
+	std::default_random_engine r(std::chrono::steady_clock::now().time_since_epoch().count());
+	D.push_front(inter(r));
+	D.push_front(inter(r));
+	D.push_front(inter(r));
+
+	std::vector<int> V(D.size()); //3
+	std::copy(D.begin(), D.end(), V.begin());
+
+	std::sort(V.rbegin(), V.rend()); //4
+
+	std::shuffle(V.begin(), V.end(), r); //5
+
+	int com = 0; //6
+	for (auto i : V) {
+		com += V[i] * D[i];
+	}
+	
+	int v4 = count_if(V.begin(), V.end(), [](auto x) {return x > 4; }); //7
+
+	int summa = std::accumulate(V.begin(), V.end(), 0); //8
+
+	int composition = std::accumulate(V.begin(), V.end(), 1, [](auto x, auto y) {return x * y; }); //9
+
+	auto Vstart = std::remove_if(V.begin(), V.end(), [](auto x) {return ((x > 3)&&(x % 2 == 0)); }); //10
+	V.erase(Vstart, V.end());
+	
+	auto Dstart = std::remove_if(D.begin(), D.end(), [](auto x) {return (x == 4); }); //11
+	D.erase(Dstart, D.end());
+	
+	std::cout << "V : "; //12
+	for (auto i : V) std::cout << i << " "; 
+	std::cout << std::endl;
+
+	std::cout << "D : "; //13
+	std::for_each(D.begin(), D.end(),
+		[](auto x) {std::cout << x << ' '; });
+	std::cout << std::endl;
+
+	auto Vminmax = std::minmax_element(V.begin(), V.end()); //14
+	std::cout << "V min : "<<*(Vminmax.first) << " V max : " << *(Vminmax.second) << std::endl;
+	auto Dminmax = std::minmax_element(D.begin(), D.end()); 
+	std::cout << "D min : " << *(Dminmax.first) << " D max : " << *(Dminmax.second) << std::endl;
+  return 0;
+}
