@@ -9,7 +9,7 @@
 #include <map>
 
 int gen() {
-	std::uniform_int<int> d;
+	std::uniform_int<int> d(1, 10);
 	std::default_random_engine e(std::chrono::steady_clock::now().time_since_epoch().count());
 	return d(e);
 }
