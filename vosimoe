@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <chrono>
+#include <random>
+#include <numeric>
+#include <list>
+#include <array>
+#include <map>
+
+int gen() {
+	std::uniform_int<int> d;
+	std::default_random_engine e(std::chrono::steady_clock::now().time_since_epoch().count());
+	return d(e);
+}
+
+int main() {
+	std::array<int, 54> array = {};
+	std::generate(std::begin(array), std::end(array), []() {return gen(); });
+
+	std::list<int> lst;
+	std::partial_sum(std::begin(array), std::end(array), std::back_inserter(lst));
+
+	std::copy(std::begin(lst), std::end(lst), std::ostream_iterator<int>(std::cout, " "));
+
+	std::map<int, bool> mp;
+	for (auto i : lst) {
+		if (i % 2 == 0) mp[i] = 1;
+		else mp[i] = 0;
+	}
+}
