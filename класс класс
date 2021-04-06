@@ -23,12 +23,12 @@ public:
 		
 	}
 	void range(int z) {
-		for (auto i : mp) {
+		for (auto& i : mp) {
 			if (i.second == z) std::cout << i.first << std::endl;
 		}
 	}
 	void standings() {
-		for (auto i : eshe_mp) {
+		for (auto& i : eshe_mp) {
 			std::cout << "ball : " << i.first << " student : " << i.second << std::endl;
 		}
 	}
