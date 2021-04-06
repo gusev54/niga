@@ -1,0 +1,61 @@
+#include <iostream>
+#include <exception>
+#include <map>
+
+class klas {
+public:
+	klas() {};
+	void insert(std::string name, unsigned bal) {
+		mp[name] = bal;
+	}
+	void list_students() {
+		for (auto i : mp) {
+			std::cout << "S: " << i.first << " R: " << i.second << std::endl;
+		}
+	}
+	int find(std::string n )  {
+		try {
+			if (mp.find(n) == mp.end()) {
+				throw std::invalid_argument("УККЩК");
+			}
+			return mp[n];
+		}
+		catch (int i) {
+			std::cout << "ERROR :" << i;
+			return i;
+		}
+	}
+	void range(int z) {
+		for (auto i : mp) {
+			if (i.second == z) std::cout << i.first << std::endl;
+		}
+	}
+	void standings() {
+		for (auto i : mp) {
+			eshe_mp.insert({ i.second, i.first });
+		}
+		for (auto i : eshe_mp) {
+			std::cout << "ball : " << i.first << " student : " << i.second << std::endl;
+		}
+	}
+private:
+	
+	std::map<std::string, int> mp;
+	std::multimap<int, std::string> eshe_mp;
+};
+
+int main() {
+	klas B5;
+	B5.insert("Vasya", 1);
+	B5.insert("Petya", 2);
+	B5.insert("Gosha", 3);
+	B5.insert("sAnya", 1);
+	B5.insert("anya", 2);
+	B5.insert("Vera", 1);
+	B5.insert("Valya", 3);
+	B5.insert("Varya", 2);
+	B5.list_students();
+	std::cout << B5.find("Petya") << std::endl;
+	B5.range(2);
+	B5.standings();
+}
