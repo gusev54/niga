@@ -5,15 +5,16 @@
 class klas {
 public:
 	klas() {};
-	void insert(std::string name, unsigned bal) {
+	void insert(std::string& name, unsigned bal) {
 		mp[name] = bal;
+		eshe_mp.insert({ bal, name });
 	}
 	void list_students() {
 		for (auto i : mp) {
 			std::cout << "S: " << i.first << " R: " << i.second << std::endl;
 		}
 	}
-	int find(std::string n )  {
+	int find(std::string& n )  {
 		try {
 			if (mp.find(n) == mp.end()) {
 				throw std::invalid_argument("УККЩК");
@@ -31,9 +32,6 @@ public:
 		}
 	}
 	void standings() {
-		for (auto i : mp) {
-			eshe_mp.insert({ i.second, i.first });
-		}
 		for (auto i : eshe_mp) {
 			std::cout << "ball : " << i.first << " student : " << i.second << std::endl;
 		}
