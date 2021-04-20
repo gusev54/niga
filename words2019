@@ -1,0 +1,22 @@
+#include <iostream>
+#include <map>
+#include <set>
+#include <algorithm>
+#include <vector>
+
+int main() {
+	std::set<std::string> set;
+	std::multimap<int, std::string> mp;
+	int N;
+	std::cin >> N;
+	for (int i = 0; i < N; i++) {
+		std::string str;
+		std::cin >>  str;
+		set.insert(str);
+	}
+	for (auto i : set) mp.insert({i.length(), i});
+	std::vector<std::string> vec;
+	for (auto i : mp) vec.push_back(i.second);
+	std::reverse(vec.begin(), vec.end());
+	for (auto i : vec) std::cout << i << std::endl;
+}
