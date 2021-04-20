@@ -1,0 +1,89 @@
+#include <iostream>
+
+using namespace std;
+
+unsigned int gcd(unsigned int a, unsigned int b) {
+	if (a == b)
+		return a;
+	if (a > b)
+		return gcd(a - b, b);
+	return gcd(a, b - a);
+}
+
+int lcm(int arg1, int arg2) {// определение функции наименьшего общего кратного
+	return arg1 / gcd(arg1, arg2) * arg2;
+}
+
+
+class Rational {
+public:
+    // Конструктор дроби, здесь a - числитель, b - знаменатель
+	Rational() : ch(0), zn(1) {}
+    Rational(int a, int b) : ch(a), zn(b) {}
+	friend std::ostream& operator<<(std::ostream& out, const Rational& x) {
+		if (x.ch != 0) {
+			int g = 1;
+			if (x.ch > 0) g = gcd(x.ch, x.zn);
+			if (x.ch < 0) g = gcd(-1 * x.ch, x.zn);
+			if (x.zn != 1 && x.ch % x.zn != 0) {
+				out << x.ch / g << '/' << x.zn / g;
+				return out;
+			}
+			else {
+				out << x.ch / x.zn;
+				return out;
+			}
+		}
+		out << 0;
+		return out;
+	}
+
+	friend const Rational operator+(const Rational& a, const Rational& b) {
+		Rational c;
+		c.zn = lcm(a.zn, b.zn);
+		c.ch = a.ch * (c.zn / a.zn) + b.ch * (c.zn / b.zn);
+		return c;
+	}
+	friend const Rational operator-(const Rational& a, const Rational& b) {
+		Rational c;
+		c.zn = lcm(a.zn, b.zn);
+		c.ch = a.ch * (c.zn / a.zn) - b.ch * (c.zn / b.zn);
+		return c;
+	}
+	friend const Rational operator*(const Rational& a, const Rational& b) {
+		Rational c(a.ch * b.ch, a.zn * b.zn);
+		return c;
+	}
+	friend const Rational operator/(const Rational& a, const Rational& b) {
+		Rational c(a.ch * b.zn, b.ch * a.zn);
+		return c;
+	}
+	friend Rational operator*(Rational& a, int b) {
+		a.ch *= b;
+		return a;
+	}
+	friend Rational operator*(int b, Rational& a) {
+		a.ch *= b;
+		return a;
+	}
+ 
+private:
+    int ch, zn;
+};
+
+int main()
+{
+    Rational a(1, 2);
+    Rational b(2, 3);
+
+    cout << a << endl;
+    cout << b << endl;
+    cout << a + b << endl;
+    cout << a - b << endl;
+    cout << a * b << endl;
+    cout << a / b << endl;
+    cout << 3 * a << endl;
+    cout << b * 4 << endl;
+
+    return 0;
+}
